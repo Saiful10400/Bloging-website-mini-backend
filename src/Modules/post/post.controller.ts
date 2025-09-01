@@ -22,8 +22,8 @@ const postOne = catchAsync(async (req: Request, res: Response) => {
 const get = catchAsync(async (req: Request, res: Response) => {
   let result;
 
-  if (req.params.id) {
-    result = await postService.getOneById(req.params.id);
+  if (req.query.id && typeof req.query.id === "string") {
+    result = await postService.getOneById(req.query.id);
   } else {
     result = await postService.getAll();
   }
@@ -38,8 +38,22 @@ const get = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//3. update a post by id
+const update = catchAsync(async (req: Request, res: Response) => {
+  if (req.params.id && typeof req.params.id === "string") {
+    const result = await postService.updateOneById(req.params.id, req.body);
+    sendResponse(res, {
+      data: result,
+      statusCode: httpStatus.OK,
+      message: "post updated successfully.",
+      success: true,
+    });
+  }
+});
+
 const postController = {
   postOne,
   get,
+  update,
 };
 export default postController;

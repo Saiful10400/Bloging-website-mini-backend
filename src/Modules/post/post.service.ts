@@ -19,5 +19,11 @@ const getAll = async (): Promise<Tpost[]> => {
   return result;
 };
 
-const postService = { createOne, getOneById, getAll };
+//4. update a post by id
+const updateOneById = async (id: string, payload: Partial<Tpost>) => {
+  const result = await postModel.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+
+const postService = { createOne, getOneById, getAll, updateOneById };
 export default postService;
